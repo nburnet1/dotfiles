@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dotfiles Install Script
-# Links configs for sketchybar, aerospace, and wallpapers
+# Links configs for sketchybar, aerospace, nvim, and wallpapers
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -15,6 +15,11 @@ ln -sf "$DOTFILES_DIR/.config/sketchybar" ~/.config/sketchybar
 # Create symlink for aerospace
 echo "Linking aerospace config..."
 ln -sf "$DOTFILES_DIR/.config/aerospace/aerospace.toml" ~/.aerospace.toml
+
+# Create symlink for nvim (LazyVim)
+echo "Linking nvim config..."
+rm -rf ~/.config/nvim
+ln -sf "$DOTFILES_DIR/.config/nvim" ~/.config/nvim
 
 # Copy wallpapers
 echo "Copying wallpapers..."
