@@ -2,7 +2,6 @@
 
 # AeroSpace Workspace Plugin
 # Shows workspace with app icons (up to 3) using sketchybar-app-font
-# Reorders so focused workspace is always first
 
 source "$CONFIG_DIR/colors.sh"
 
@@ -34,14 +33,16 @@ HAS_WINDOWS=$([ -n "$APPS" ] && echo "true" || echo "false")
 
 # Update workspace item
 if [ "$WORKSPACE_ID" = "$CURRENT_WORKSPACE" ]; then
-  # Focused workspace - always show and highlight
+  # Focused workspace - prominent highlight with filled background
   sketchybar --set $NAME \
     drawing=on \
     icon.highlight=on \
     label.highlight=on \
     label="$ICON_STRIP" \
     background.drawing=on \
-    background.border_color=$WORKSPACE_ACTIVE_BG
+    background.color=$WORKSPACE_ACTIVE_BG \
+    background.border_color=$WORKSPACE_ACTIVE_BG \
+    background.border_width=2
   
 elif [ "$HAS_WINDOWS" = "true" ]; then
   # Has windows but not focused - show normally
@@ -51,7 +52,9 @@ elif [ "$HAS_WINDOWS" = "true" ]; then
     label.highlight=off \
     label="$ICON_STRIP" \
     background.drawing=on \
-    background.border_color=$SUBTLE_COLOR
+    background.color=0x00000000 \
+    background.border_color=$SUBTLE_COLOR \
+    background.border_width=1
 else
   # Empty and not focused - hide it
   sketchybar --set $NAME drawing=off

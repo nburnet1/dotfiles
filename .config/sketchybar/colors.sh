@@ -28,9 +28,9 @@ export ORANGE=0xffa37926             # Warm orange/brown
 export RED=0xff936100                # Earthy orange-brown
 export BLUE=0xff2a8494               # Coastal blue (bright_magenta)
 
-# Workspace Colors
-export WORKSPACE_ACTIVE_BG=0xff763900   # Deep amber/rust (Bulwer accent)
-export WORKSPACE_ACTIVE_FG=0xfff6f1e9   # Cream white
+# Workspace Colors - MORE VISIBLE active state
+export WORKSPACE_ACTIVE_BG=0xffbc8400   # Bright gold/amber - more visible!
+export WORKSPACE_ACTIVE_FG=0xff1a1410   # Dark brown text on bright bg
 export WORKSPACE_INACTIVE_BG=0x00000000 # Transparent
 export WORKSPACE_INACTIVE_FG=0xffd4c8b0 # Warm cream
 export WORKSPACE_EMPTY_FG=0x60a09080    # Muted warm gray
