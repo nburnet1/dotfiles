@@ -1,0 +1,204 @@
+#!/bin/bash
+
+# SketchyBar configuration with AeroSpace integration
+# A clean, minimal, and functional status bar
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+# Source colors (generated from wallpaper via pywal)
+source "$CONFIG_DIR/colors.sh"
+
+##### Bar Appearance #####
+sketchybar --bar \
+  position=top \
+  height=32 \
+  blur_radius=30 \
+  color=$BAR_COLOR \
+  border_width=0 \
+  margin=0 \
+  y_offset=0 \
+  corner_radius=0 \
+  padding_left=8 \
+  padding_right=8 \
+  notch_width=0 \
+  topmost=off \
+  shadow=off
+
+##### Default Item Settings #####
+default=(
+  padding_left=6
+  padding_right=6
+  icon.font="FiraCode Nerd Font Mono:Regular:14.0"
+  label.font="FiraCode Nerd Font Mono:Regular:13.0"
+  icon.color=$ICON_COLOR
+  label.color=$LABEL_COLOR
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+  background.height=26
+  background.corner_radius=8
+)
+sketchybar --default "${default[@]}"
+
+##### Register AeroSpace Event #####
+sketchybar --add event aerospace_workspace_change
+
+##### Left Side Items #####
+
+# Front App with native icon (first item)
+sketchybar --add item front_app left \
+           --set front_app \
+                 icon.drawing=off \
+                 background.image.scale=0.65 \
+                 background.image.drawing=on \
+                 background.drawing=on \
+                 background.color=0x00000000 \
+                 background.padding_right=5 \
+                 label.font="FiraCode Nerd Font Mono:Regular:13.0" \
+                 label.color=$LABEL_COLOR \
+                 label.padding_left=25 \
+                 script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+# Chevron separator
+sketchybar --add item chevron left \
+           --set chevron \
+                 icon="󰅂" \
+                 icon.font="FiraCode Nerd Font Mono:Regular:12.0" \
+                 icon.color=$SUBTLE_COLOR \
+                 label.drawing=off \
+                 padding_left=4 \
+                 padding_right=4
+
+# AeroSpace Workspaces
+source "$ITEM_DIR/aerospace.sh"
+
+##### Center Items #####
+
+# Media Player (now playing)
+sketchybar --add item media center \
+           --set media \
+                 icon="󰎆" \
+                 icon.color=$ACCENT_COLOR \
+                 label.max_chars=40 \
+                 scroll_texts=on \
+                 updates=on \
+                 script="$PLUGIN_DIR/media.sh" \
+           --subscribe media media_change
+
+##### Right Side Items #####
+
+# Date and Time
+sketchybar --add item clock right \
+           --set clock \
+                 icon.drawing=off \
+                 update_freq=30 \
+                 script="$PLUGIN_DIR/clock.sh"
+
+# WiFi Status
+sketchybar --add item wifi right \
+           --set wifi \
+                 icon="󰤨" \
+                 icon.color=$ACCENT_COLOR \
+                 icon.padding_right=0 \
+                 label.drawing=off \
+                 update_freq=30 \
+                 script="$PLUGIN_DIR/wifi.sh" \
+                 click_script="open 'x-apple.systempreferences:com.apple.preference.network'"
+
+# Volume
+sketchybar --add item volume right \
+           --set volume \
+                 icon.color=$ACCENT_COLOR \
+                 script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change
+
+# Battery
+sketchybar --add item battery right \
+           --set battery \
+                 icon.color=$ACCENT_COLOR \
+                 update_freq=120 \
+                 script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change
+
+# RAM Usage
+sketchybar --add item ram right \
+           --set ram \
+                 icon="󰍛" \
+                 icon.color=$ACCENT_COLOR \
+                 update_freq=5 \
+                 script="$PLUGIN_DIR/ram.sh"
+
+# CPU Percentage Label
+sketchybar --add item cpu_percent right \
+           --set cpu_percent \
+                 icon="󰻠" \
+                 icon.color=$ACCENT_COLOR \
+                 label="0%" \
+                 label.font="FiraCode Nerd Font Mono:Regular:13.0" \
+                 label.width=45 \
+                 label.align=right \
+                 update_freq=2 \
+                 script="$PLUGIN_DIR/cpu_percent.sh"
+
+# CPU Sparkline Graph
+sketchybar --add graph cpu_graph right 40 \
+           --set cpu_graph \
+                 graph.color=$ACCENT_COLOR \
+                 graph.fill_color=$BRACKET_COLOR \
+                 graph.line_width=1 \
+                 icon.drawing=off \
+                 label.drawing=off \
+                 background.drawing=off \
+                 y_offset=2 \
+                 width=50 \
+                 padding_left=0 \
+                 padding_right=0 \
+                 update_freq=2 \
+                 script="$PLUGIN_DIR/cpu_graph.sh"
+
+# Network Icon
+sketchybar --add item network_icon right \
+           --set network_icon \
+                 icon="󰛳" \
+                 icon.color=$ACCENT_COLOR \
+                 label.drawing=off
+
+# Network Graph
+sketchybar --add graph network right 40 \
+           --set network \
+                 graph.color=$GREEN \
+                 graph.fill_color=$BRACKET_COLOR \
+                 graph.line_width=1 \
+                 icon.drawing=off \
+                 label.drawing=off \
+                 background.drawing=off \
+                 y_offset=2 \
+                 width=50 \
+                 padding_left=0 \
+                 padding_right=0 \
+                 update_freq=2 \
+                 script="$PLUGIN_DIR/network.sh"
+
+##### Bracket Groups #####
+
+# Group left items
+sketchybar --add bracket workspaces '/space\..*/' \
+           --set workspaces \
+                 background.color=$BRACKET_COLOR \
+                 background.corner_radius=8 \
+                 background.height=26 \
+                 background.drawing=on
+
+# Group right status items
+sketchybar --add bracket status battery volume wifi clock ram cpu_percent cpu_graph network_icon network \
+           --set status \
+                 background.color=$BRACKET_COLOR \
+                 background.corner_radius=8 \
+                 background.height=26 \
+                 background.drawing=on
+
+##### Force all scripts to run the first time #####
+sketchybar --update
