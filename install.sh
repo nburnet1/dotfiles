@@ -21,6 +21,6 @@ echo "Copying wallpapers..."
 mkdir -p ~/Pictures/Wallpapers
 cp -n "$DOTFILES_DIR/wallpapers/"* ~/Pictures/Wallpapers/ 2>/dev/null || true
 
-echo "Done! Restart sketchybar and aerospace to apply changes:"
+echo "Done! Restart services to apply changes:"
 echo "  sketchybar --reload"
 echo "  aerospace reload-config"

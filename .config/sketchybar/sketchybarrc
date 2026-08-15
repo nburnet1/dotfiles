@@ -133,56 +133,27 @@ sketchybar --add item ram right \
                  update_freq=5 \
                  script="$PLUGIN_DIR/ram.sh"
 
-# CPU Percentage Label
-sketchybar --add item cpu_percent right \
-           --set cpu_percent \
-                 icon="󰻠" \
-                 icon.color=$ACCENT_COLOR \
-                 label="0%" \
-                 label.font="FiraCode Nerd Font Mono:Regular:13.0" \
-                 label.width=45 \
-                 label.align=right \
-                 update_freq=2 \
-                 script="$PLUGIN_DIR/cpu_percent.sh"
-
-# CPU Sparkline Graph
-sketchybar --add graph cpu_graph right 40 \
-           --set cpu_graph \
-                 graph.color=$ACCENT_COLOR \
-                 graph.fill_color=$BRACKET_COLOR \
-                 graph.line_width=1 \
+# Gap before CPU card
+sketchybar --add item gap1 right \
+           --set gap1 \
+                 width=4 \
                  icon.drawing=off \
                  label.drawing=off \
-                 background.drawing=off \
-                 y_offset=2 \
-                 width=50 \
-                 padding_left=0 \
-                 padding_right=0 \
-                 update_freq=2 \
-                 script="$PLUGIN_DIR/cpu_graph.sh"
+                 background.drawing=off
 
-# Network Icon
-sketchybar --add item network_icon right \
-           --set network_icon \
-                 icon="󰛳" \
-                 icon.color=$ACCENT_COLOR \
-                 label.drawing=off
+# CPU Card - FelixKratz style (label + percent + graph)
+source "$ITEM_DIR/cpu.sh"
 
-# Network Graph
-sketchybar --add graph network right 40 \
-           --set network \
-                 graph.color=$GREEN \
-                 graph.fill_color=$BRACKET_COLOR \
-                 graph.line_width=1 \
+# Gap before Network card
+sketchybar --add item gap2 right \
+           --set gap2 \
+                 width=4 \
                  icon.drawing=off \
                  label.drawing=off \
-                 background.drawing=off \
-                 y_offset=2 \
-                 width=50 \
-                 padding_left=0 \
-                 padding_right=0 \
-                 update_freq=2 \
-                 script="$PLUGIN_DIR/network.sh"
+                 background.drawing=off
+
+# Network Card - FelixKratz style (label + speed + dual graphs)
+source "$ITEM_DIR/network.sh"
 
 ##### Bracket Groups #####
 
@@ -195,8 +166,24 @@ sketchybar --add bracket workspaces '/space\..*/' \
                  background.drawing=on
 
 # Group right status items
-sketchybar --add bracket status battery volume wifi clock ram cpu_percent cpu_graph network_icon network \
+sketchybar --add bracket status battery volume wifi clock ram \
            --set status \
+                 background.color=$BRACKET_COLOR \
+                 background.corner_radius=8 \
+                 background.height=26 \
+                 background.drawing=on
+
+# Group CPU card items
+sketchybar --add bracket cpu_card cpu.top cpu.percent cpu.sys \
+           --set cpu_card \
+                 background.color=$BRACKET_COLOR \
+                 background.corner_radius=8 \
+                 background.height=26 \
+                 background.drawing=on
+
+# Group Network card items  
+sketchybar --add bracket net_card net.top net.speed net.down net.up \
+           --set net_card \
                  background.color=$BRACKET_COLOR \
                  background.corner_radius=8 \
                  background.height=26 \
