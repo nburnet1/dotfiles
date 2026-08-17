@@ -39,7 +39,7 @@ pnpm install && pnpm run build:install
 ## Installation
 
 ```bash
-git clone <your-repo-url> ~/dotfiles
+git clone https://github.com/nburnet1/dotfiles ~/dotfiles
 cd ~/dotfiles
 chmod +x install.sh
 ./install.sh
